@@ -10,7 +10,7 @@
 
 
 <!-- gears -->
-<div class="gears-preloader">
+<div class="gears-preloader" id="gears-preloader">
 
     <div class="overlay"></div>
     <div class="gear one">
@@ -44,6 +44,12 @@
 
 <script src="resources/js/config/config.js"></script>
 <script src="resources/js/lib/dojo-1.10.4/dojo/dojo.js" data-dojo-config="async: true"></script>
-
+<script>
+    require([
+        'calclab/CalclabApplication'
+    ], function (CalclabApplication) {
+        CalclabApplication.init();
+    });
+</script>
 </body>
 </html>
