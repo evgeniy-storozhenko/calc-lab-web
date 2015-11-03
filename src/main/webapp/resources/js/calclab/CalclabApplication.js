@@ -2,7 +2,7 @@ define([
     'dojo/_base/declare',
     "dojo/dom",
     "dojo/dom-style",
-    'calclab/core/Workbench'
+    'calclab/ui/common/Workbench'
 ], function (declare, dom, domStyle, Workbench) {
 
     return declare(null, {

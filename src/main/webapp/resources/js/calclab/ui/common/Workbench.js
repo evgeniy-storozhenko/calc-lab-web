@@ -1,11 +1,18 @@
 define([
-    'dojo/_base/declare', "dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/ContentPane", "dojo/domReady!"
-], function (declare, BorderContainer, TabContainer, ContentPane) {
+    'dojo/_base/declare',
+    "dijit/layout/BorderContainer",
+    "dijit/layout/TabContainer",
+    "dijit/layout/ContentPane",
+    "calclab/ui/menus/MainMenu",
+    "dojo/domReady!"
+], function (declare, BorderContainer, TabContainer, ContentPane, MainMenu) {
 
     return declare(null, {
 
         workbench: null,
+        mainMenu: null,
         tabContainer: null,
+
 
         constructor: function () {
             this.createWorkbench();
@@ -26,13 +33,13 @@ define([
         },
 
         createTopContentPane: function() {
-            this.workbench.addChild(
-                new ContentPane({
-                    region: "top",
-                    "class": "edgePanel",
-                    content: "Header content (top)"
-                })
-            );
+            var topPane = new ContentPane({
+                region: "top",
+                "class": "edgePanel"
+            });
+            var menu = new MainMenu();
+            topPane.addChild(menu.menuBar);
+            this.workbench.addChild(topPane);
         },
 
         createToolbar: function() {
