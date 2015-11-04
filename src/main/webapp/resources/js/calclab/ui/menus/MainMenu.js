@@ -12,9 +12,7 @@ define([
         menuBar: null,
 
         constructor: function (element) {
-            this.menuBar = new MenuBar({
-                'class': 'floatLeft'
-            });
+            this.menuBar = new MenuBar({'class': 'floatLeft'});
             this.createLogo();
             this.createItemFile();
             this.createItemEdit();
@@ -89,7 +87,8 @@ define([
         createItemRun: function () {
             var items = [
                 new MenuItem({
-                    label: "Calculate"
+                    label: "Calculate",
+                    iconClass: "dijitEditorIcon icon-play"
                 }),
                 new MenuItem({
                     label: "Preferences",
