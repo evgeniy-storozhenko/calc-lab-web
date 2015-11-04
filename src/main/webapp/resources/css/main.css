@@ -100,9 +100,38 @@ p {
     width: 14em;
 }
 
-/*.calclab-logo span {*/
-    /*font-weight: bold;*/
-    /*font-size: 18pt;*/
-    /*position: absolute;*/
-    /*margin: -10px 0px 0px 0px;*/
-/*}*/
+.calclab-logo {
+    font-weight: bold;
+    font-size: 20pt;
+    position: absolute;
+    margin: -28px 0px 0px -12px;
+    color: #444;
+    text-shadow: 1px 1px 0px rgba(200, 200, 200, 1);
+    border: 1px solid #777;
+    padding: 7px 12px;
+}
+
+.calclab-logo-label {
+    display: inline-block;
+    width: 26px;
+}
+
+.calclab-logo-block {
+    background: #999;
+}
+
+.calclab-logo-block :hover {
+    background: #888;
+}
+
+.floatLeft {
+    float: left;
+}
+
+.floatRight {
+    float: right;
+}
+
+#workbench .mainMenu {
+    background: #f5f5f5;
+}

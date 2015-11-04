@@ -4,8 +4,9 @@ define([
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane",
     "calclab/ui/menus/MainMenu",
+    "calclab/ui/user/Auth",
     "dojo/domReady!"
-], function (declare, BorderContainer, TabContainer, ContentPane, MainMenu) {
+], function (declare, BorderContainer, TabContainer, ContentPane, MainMenu, Auth) {
 
     return declare(null, {
 
@@ -35,10 +36,13 @@ define([
         createTopContentPane: function() {
             var topPane = new ContentPane({
                 region: "top",
-                "class": "edgePanel"
+                "class": "edgePanel mainMenu"
             });
             var menu = new MainMenu();
+            var auth = new Auth();
             topPane.addChild(menu.menuBar);
+            topPane.addChild(auth.pane);
+
             this.workbench.addChild(topPane);
         },
 

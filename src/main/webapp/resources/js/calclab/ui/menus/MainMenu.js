@@ -12,7 +12,9 @@ define([
         menuBar: null,
 
         constructor: function (element) {
-            this.menuBar = new MenuBar({});
+            this.menuBar = new MenuBar({
+                'class': 'floatLeft'
+            });
             this.createLogo();
             this.createItemFile();
             this.createItemEdit();
@@ -134,8 +136,8 @@ define([
                 pSubMenu.addChild(item);
             });
             this.menuBar.addChild(new PopupMenuBarItem({
-                label: "Cl<b>1</b>",
-                class: "calclab-logo",
+                label: '<span class="calclab-logo-label"></span><div class="calclab-logo">Cl</div>',
+                'class': 'calclab-logo-block',
                 popup: pSubMenu
             }));
         }
