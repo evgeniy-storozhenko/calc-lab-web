@@ -5,36 +5,38 @@ define([
     "dijit/layout/ContentPane",
     "calclab/ui/menus/MainMenu",
     "calclab/ui/menus/Toolbar",
+    "calclab/ui/common/Window",
+    "calclab/ui/views/FileManagerView",
     "calclab/ui/user/Auth",
     "dojo/domReady!"
-], function (declare, BorderContainer, TabContainer, ContentPane, MainMenu, Toolbar, Auth) {
+], function (declare, BorderContainer, TabContainer, ContentPane, MainMenu, Toolbar, WorkbenchWindow, FileManagerView,
+             Auth) {
 
     return declare(null, {
 
         workbench: null,
         mainMenu: null,
-        tabContainer: null,
-
+        windows: [],
 
         constructor: function () {
-            this.createWorkbench();
-            this.createTopContentPane();
-            this.createToolbar();
-            this.createLeftContentPane();
-            this.createRightContentPane();
-            this.createCenterContentPane();
-            this.createBottomContentPane();
+            this.initWorkbench();
+            this.initTopContentPane();
+            this.initToolbar();
+            this.initLeftContentPane();
+            this.initRightContentPane();
+            this.initCenterContentPane();
+            this.initStatusBar();
 
             this.workbench.startup();
         },
 
-        createWorkbench: function () {
+        initWorkbench: function () {
             this.workbench = new BorderContainer({
                 design: "headline"
             }, "workbench");
         },
 
-        createTopContentPane: function() {
+        initTopContentPane: function () {
             var topPane = new ContentPane({
                 region: "top",
                 "class": "edgePanel topPane"
@@ -47,7 +49,7 @@ define([
             this.workbench.addChild(topPane);
         },
 
-        createToolbar: function() {
+        initToolbar: function () {
             var toolbar = new Toolbar({});
             var pane = new ContentPane({
                 region: "top",
@@ -57,56 +59,85 @@ define([
             this.workbench.addChild(pane);
         },
 
-        createLeftContentPane: function() {
-            this.workbench.addChild(
-                new ContentPane({
-                    region: "left",
-                    id: "leftColumn", "class": "edgePanel",
-                    content: "Sidebar content (left)",
-                    splitter: true
-                })
-            );
-        },
-
-        createRightContentPane: function() {
-            this.workbench.addChild(
-                new ContentPane({
-                    region: "right",
-                    id: "rightColumn", "class": "edgePanel",
-                    content: "Sidebar content (right)",
-                    splitter: true
-                })
-            );
-        },
-
-        createCenterContentPane: function () {
-            this.tabContainer = new TabContainer({
-                region: "center",
-                id: "contentTabs",
-                tabPosition: "top",
-                "class": "centerPanel"
+        initLeftContentPane: function () {
+            var pane = new ContentPane({
+                region: "left",
+                id: "leftColumn", "class": "edgePanel",
+                splitter: true
             });
 
-            this.tabContainer.addChild(
+            var tabContainer1 = new TabContainer({style: "height: 50%; width: 100%;"});
+            var tabContainer2 = new TabContainer({style: "height: 50%; width: 100%;"});
+
+            var pane1 = new ContentPane({
+                title: "Files Explorer"
+            });
+            pane1.addChild(new FileManagerView().tree);
+            tabContainer1.addChild(pane1);
+
+            tabContainer2.addChild(
                 new ContentPane({
                     content: "Center",
-                    title: "Group 1"
+                    title: "Variables"
                 })
             );
 
-            this.workbench.addChild(this.tabContainer);
+            pane.addChild(tabContainer1);
+            pane.addChild(tabContainer2);
+
+            this.workbench.addChild(pane);
         },
 
-        createBottomContentPane: function() {
+        initRightContentPane: function () {
+            var pane = new ContentPane({
+                region: "right",
+                id: "rightColumn", "class": "edgePanel",
+                splitter: true
+            });
+
+            var tabContainer1 = new TabContainer({style: "height: 50%; width: 100%;"});
+            var tabContainer2 = new TabContainer({style: "height: 50%; width: 100%;"});
+
+            tabContainer1.addChild(
+                new ContentPane({
+                    content: "Center",
+                    title: "Functions"
+                })
+            );
+
+            tabContainer2.addChild(
+                new ContentPane({
+                    content: "Center",
+                    title: "Constants"
+                })
+            );
+
+            pane.addChild(tabContainer1);
+            pane.addChild(tabContainer2);
+
+            this.workbench.addChild(pane);
+        },
+
+        initCenterContentPane: function () {
+            var win = new Window();
+            this.windows.push(win);
+            this.workbench.addChild(win);
+            win.openDefaultPage();
+        },
+
+        initStatusBar: function () {
             this.workbench.addChild(
                 new ContentPane({
                     region: "bottom",
                     id: "bottomColumn", "class": "edgePanel",
-                    content: "Sidebar content (bottom)",
-                    splitter: true
+                    content: "Sidebar content (bottom)"
                 })
             );
         },
+
+        getActiveWindow: function () {
+            return this.windows[0];
+        }
     });
 
 });

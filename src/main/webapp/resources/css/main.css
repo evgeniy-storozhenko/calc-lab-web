@@ -183,3 +183,7 @@ p {
     height: 18px;
     background: url(../images/lang/ru.png) no-repeat;
 }
+
+#workbench .CodeMirror {
+    height: 100%;
+}
