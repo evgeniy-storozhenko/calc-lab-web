@@ -31,6 +31,10 @@ table td {
     vertical-align: top;
 }
 
+span:focus{
+    outline: 0;
+}
+
 header, footer, article, section, nav, figure {
     /* Giving a display value to the HTML5 rendered elements: */
     display: block;
@@ -83,6 +87,18 @@ p {
     font-size: 12px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayBlock {
+    display: block;
+}
+
+.displayInlineBlock {
+    display: inline-block;
 }
 
 #workbench {
@@ -184,6 +200,39 @@ p {
     background: url(../images/lang/ru.png) no-repeat;
 }
 
+.icon-code {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url(../images/icons/code.png) no-repeat;
+}
+
 #workbench .CodeMirror {
     height: 100%;
+}
+
+#workbench .sourceButton {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#workbench .resultButton {
+    margin-left: 0px;
+}
+
+#workbench .resultButton .dijitButtonText {
+    color: #FFF;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
+}
+
+#workbench .sourceButton .dijitButtonNode {
+    -webkit-border-radius: 2px 0px 0px 2px;
+    border-radius: 2px 0px 0px 2px;
+    border-right: 0px;
+}
+
+#workbench .resultButton .dijitButtonNode {
+    -webkit-border-radius: 0px 2px 2px 0px;
+    border-radius: 0px 2px 2px 0px;
+
 }

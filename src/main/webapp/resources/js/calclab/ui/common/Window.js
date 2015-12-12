@@ -2,9 +2,8 @@ define([
     'dojo/_base/declare',
     'dijit/layout/TabContainer',
     'dojo/_base/lang',
-    'calclab/ui/editors/CalcEditor',
-    'dijit/layout/ContentPane'
-], function (declare, TabContainer, lang, CalcEditor, ContentPane) {
+    'calclab/ui/editors/CalcEditor'
+], function (declare, TabContainer, lang, CalcEditor) {
 
     return declare('Window', [TabContainer], {
 
@@ -30,7 +29,7 @@ define([
             this.openPage({
                 id: --this.incId,
                 ext: this.extensions[0].ext,
-                isDirty: true,
+                isDirty: true
             });
         },
 

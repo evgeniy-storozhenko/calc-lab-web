@@ -24,6 +24,9 @@ define([
         },
 
         init: function () {
+        },
+
+        run: function() {
         }
 
     });
