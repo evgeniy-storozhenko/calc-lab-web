@@ -23,8 +23,8 @@
           p:basename="messages"/>
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
           p:order="0"/>
-    <bean
-            class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="order" value="1"/>
         <property name="contentNegotiationManager">
             <bean class="org.springframework.web.accept.ContentNegotiationManager">
@@ -32,7 +32,7 @@
                     <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
                         <constructor-arg>
                             <map>
-                                <entry key="json" value="application/json"></entry>
+                                <entry key="json" value="application/json"/>
                             </map>
                         </constructor-arg>
                     </bean>
@@ -41,8 +41,7 @@
         </property>
         <property name="defaultViews">
             <list>
-                <bean
-                        class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
                 <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
                     <constructor-arg>
                         <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
@@ -54,8 +53,10 @@
         </property>
     </bean>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" p:order="2"/>
-
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
 
 </beans>
