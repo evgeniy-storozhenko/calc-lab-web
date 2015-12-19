@@ -1,6 +1,7 @@
 define([
-    'dojo/_base/declare'
-], function (declare) {
+    'dojo/_base/declare',
+    'calclab/core/job/JobManager'
+], function (declare, JobManager) {
 
     return declare('Job', [], {
 
@@ -9,11 +10,9 @@ define([
         deferred: null,
 
         constructor: function (name, deferred) {
-            console.log(name + " started");
+            this.name = name;
             this.deferred = deferred;
-            this.deferred.then(function () {
-                console.log(name + " finished");
-            });
+            JobManager.push(this);
         },
 
         then: function (func) {

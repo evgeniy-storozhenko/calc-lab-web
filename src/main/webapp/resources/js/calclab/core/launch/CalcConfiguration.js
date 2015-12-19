@@ -14,17 +14,12 @@ define([
         },
 
         execute: function(name, input) {
-
             var request = xhr.post({
                 url: this.url,
                 handleAs: "json",
                 content: { input: input }
             });
-
-            var job = new Job(name, request);
-            job.then(function(data) {
-                console.log("final action")
-            });
+            return new Job(name, request);
         }
 
     })();

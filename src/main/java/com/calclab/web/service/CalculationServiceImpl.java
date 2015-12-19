@@ -17,16 +17,19 @@ import com.calclab.web.model.CalcResult;
 public class CalculationServiceImpl implements CalculationService, ResourceLoaderAware {
 
     private static final String propPath = "WEB-INF/classes/calculation.properties";
-    private static final String propName = "calc-lab-headless-path";
+    private static final String propPathName = "calc-lab-headless-path";
+    private static final String propLauncherName = "launcher";
     private ResourceLoader resourceLoader;
     private String calcLabPath;
+    private String launcher;
 
     private void setCalcLabPath() {
         Resource resource = resourceLoader.getResource(propPath);
         Properties prop = new Properties();
         try {
             prop.load(resource.getInputStream());
-            calcLabPath = prop.getProperty(propName);
+            calcLabPath = prop.getProperty(propPathName);
+            launcher = prop.getProperty(propLauncherName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,10 +44,9 @@ public class CalculationServiceImpl implements CalculationService, ResourceLoade
         if (calcLabPath == null) {
             setCalcLabPath();
         }
-        String command =  calcLabPath + "/calclab.sh";
-
         try {
-            ProcessBuilder calcProcessBuilder = new ProcessBuilder("/bin/sh", command, "-i", input);
+            String[] command = { "java", "-jar", "plugins/" + launcher, "-i", input };
+            ProcessBuilder calcProcessBuilder = new ProcessBuilder(command);
             calcProcessBuilder.directory(new File(calcLabPath));
             Process calcProcess = calcProcessBuilder.start();
             result = readProcessOutput(calcProcess);

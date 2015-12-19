@@ -29,9 +29,13 @@ define([
         },
 
         run: function() {
+            var self = this;
+            this.setResult("");
             var name = "New calculation 1"; // todo remove hardcode
             var input = this.editor.getValue();
-            CalcConfiguration.execute(name, input);
+            CalcConfiguration.execute(name, input).then(function(responce) {
+                self.setResult(responce.result);
+            });
         },
 
         createEditor: function () {
@@ -73,6 +77,11 @@ define([
                 defaultValue += defaultValue;
             }
             this.editor.setValue(defaultValue);
+        },
+
+        setResult: function(value) {
+            var resultPane = document.getElementById("CalcResultTab" + this.id);
+            resultPane.innerHTML = "<pre>" + value + "</pre>";
         },
 
         onClickSource: function () {
