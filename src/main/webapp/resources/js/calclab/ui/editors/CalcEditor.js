@@ -4,13 +4,17 @@ define([
     'dojo/_base/lang',
     'dojo/dom-class',
     'calclab/ui/editors/BaseEditor',
+    'calclab/ui/editors/formatters/KatexFormatter',
     'calclab/core/launch/CalcConfiguration',
     'dijit/layout/ContentPane',
     'dijit/form/Button',
     'cm/lib/codemirror',
+    'calclab/ui/common/Alert',
+    'dijit/ProgressBar',
     'cm/mode/calclab/calclab',
     'dojo/domReady!'
-], function (declare, win, lang, domClass, BaseEditor, CalcConfiguration, ContentPane, Button, CodeMirror) {
+], function (declare, win, lang, domClass, BaseEditor, KatexFormatter, CalcConfiguration, ContentPane, Button,
+             CodeMirror, Alert, ProgressBar) {
 
     var CalcEditor = declare('CalcEditor', [BaseEditor], {
 
@@ -30,11 +34,24 @@ define([
 
         run: function() {
             var self = this;
-            this.setResult("");
+            self.setResult("");
+            this.showProgressBar();
             var name = "New calculation 1"; // todo remove hardcode
             var input = this.editor.getValue();
             CalcConfiguration.execute(name, input).then(function(responce) {
-                self.setResult(responce.result);
+                var value;
+                try {
+                    value = KatexFormatter.format(responce);
+                    value = "<div class='output'>" + value + "</div>";
+                } catch (e) {
+                    if (e.message.indexOf("is not a function") != -1) {
+                        value = "Can't find view for current operand. The UI is out of date.";
+                    } else {
+                        value = e.message;
+                    }
+                    value = Alert.createErrorBox("Error", value);
+                }
+                self.setResult(value);
             });
         },
 
@@ -81,7 +98,16 @@ define([
 
         setResult: function(value) {
             var resultPane = document.getElementById("CalcResultTab" + this.id);
-            resultPane.innerHTML = "<pre>" + value + "</pre>";
+            resultPane.innerHTML = value;
+        },
+
+        showProgressBar: function() {
+            var resultPane = document.getElementById("CalcResultTab" + this.id);
+            var progressBar = new ProgressBar({
+                indeterminate: true,
+                style: "width: 300px; margin: 15px auto;"
+            }).placeAt(resultPane);
+            progressBar.startup();
         },
 
         onClickSource: function () {

@@ -19,7 +19,7 @@ public class CalculationController {
 
     @RequestMapping(value = "/execute", method = RequestMethod.POST, produces="application/json")
     public @ResponseBody
-    CalcResult execute(@RequestParam(value = "input") String input) {
+    String execute(@RequestParam(value = "input") String input) {
         return calculationService.execute(input);
     }
 

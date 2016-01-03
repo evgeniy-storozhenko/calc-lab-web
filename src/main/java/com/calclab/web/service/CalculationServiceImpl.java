@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 import com.calclab.web.model.CalcResult;
 
 @Service("CalculationService")
-public class CalculationServiceImpl implements CalculationService, ResourceLoaderAware {
+public class CalculationServiceImpl implements CalculationService,
+        ResourceLoaderAware {
 
     private static final String propPath = "WEB-INF/classes/calculation.properties";
     private static final String propPathName = "calc-lab-headless-path";
@@ -39,13 +40,14 @@ public class CalculationServiceImpl implements CalculationService, ResourceLoade
         this.resourceLoader = resourceLoader;
     }
 
-    public CalcResult execute(String input) {
+    public String execute(String input) {
         String result = "";
         if (calcLabPath == null) {
             setCalcLabPath();
         }
         try {
-            String[] command = { "java", "-jar", "plugins/" + launcher, "-i", input };
+            String[] command = { "java", "-jar", "plugins/" + launcher, "-t", "json", "-i", input };
+
             ProcessBuilder calcProcessBuilder = new ProcessBuilder(command);
             calcProcessBuilder.directory(new File(calcLabPath));
             Process calcProcess = calcProcessBuilder.start();
@@ -54,8 +56,7 @@ public class CalculationServiceImpl implements CalculationService, ResourceLoade
             result = e.getMessage();
             e.printStackTrace();
         }
-
-        return new CalcResult(result);
+        return result;
     }
 
     private String readProcessOutput(Process calcProcess) throws IOException {

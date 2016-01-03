@@ -7,6 +7,9 @@ var dojoConfig = {
         }, {
             name: "cm",
             location: location.pathname.replace(/\/[^/]*$/, '') + '/resources/js/lib/codemirror-5.8'
+        }, {
+            name: "katex",
+            location: location.pathname.replace(/\/[^/]*$/, '') + '/resources/js/lib/katex'
         }
     ]
 };
