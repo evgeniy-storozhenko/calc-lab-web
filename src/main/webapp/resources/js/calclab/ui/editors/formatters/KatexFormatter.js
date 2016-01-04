@@ -5,6 +5,10 @@ define([
 
     return declare('KatexFormatter', [], {
 
+        argsInDeg: ["sind","cosd","tgd","ctgd"],
+
+        resInDeg: ["arcsind","arccosd","arctgd","arcctgd"],
+
         expSeparator: "<br/>",
 
         /**
@@ -52,12 +56,33 @@ define([
             return value;
         },
 
-        func: function(expression, level) {
+        unary: function(expression, level) {
+            level++;
+            var operand = this.format([expression.operand], level);
+            var operation = expression.operation;
+
+            var result;
+            if (expression.after) {
+                result = operand + operation;
+            } else {
+                result = operation + operand;
+            }
+            return result;
+        },
+
+        func: function (expression, level) {
             level++;
             var name = expression.name;
-            var args = expression.args.map(function(arg) {
+            var args = expression.args.map(function (arg) {
                 return this.format([arg], level);
             }, this);
+
+            if (this.argsInDeg.indexOf(name) != -1) {
+                name = name.substr(0, name.length - 1);
+                var args = args.map(function (arg) {
+                    return arg + "^{\circ}";
+                }, this);
+            }
 
             return name + "(" + args.join(",") + ")";
         }
