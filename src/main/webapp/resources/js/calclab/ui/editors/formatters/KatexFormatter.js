@@ -9,6 +9,8 @@ define([
 
         resInDeg: ["arcsind","arccosd","arctgd","arcctgd"],
 
+        stepsLineEndings: "\n",
+
         expSeparator: "<br/>",
 
         /**
@@ -27,13 +29,48 @@ define([
             return output;
         },
 
+        getSteps: function(expression) {
+            var steps = "";
+            if (expression.steps) {
+                steps = expression.steps.map(function(step) {
+                    return step.replace(/(\r\n|\n|\r)/gm, this.expSeparator);
+                }, this).join(this.expSeparator);
+            }
+            return steps;
+        },
+
         calculation: function(expression, level) {
             level++;
             var operand = this.format([expression.operand], level);
             var result = this.format([expression.result], level);
 
-            var output = operand + ((expression.exact) ? "=" : "≈") + result;
-            return katex.renderToString(output);
+            var steps = this.getSteps(expression);
+            var output = operand;
+
+            if (result != "") {
+                output += ((expression.exact) ? " = " : " \\approx ") + result;
+            }
+
+            if (level == 1) {
+                return katex.renderToString(output) + steps;
+            }
+            return output + steps;
+        },
+
+        variable: function(expression, level) {
+            level++;
+            var value = this.format([expression.expression], level);
+            var key = expression.key;
+            var steps = this.getSteps(expression);
+
+            if (level == 1) {
+                var output = key;
+                if (value != "") {
+                    output += ((expression.exact) ? " = " : " \\approx ") + value;
+                }
+                return katex.renderToString(output) + steps;
+            }
+            return key;
         },
 
         composite: function(expression, level) {
@@ -41,10 +78,19 @@ define([
             var a = this.format([expression.a], level);
             var b = this.format([expression.b], level);
             var operation = expression.operation;
-            if (level > 2) {
-                return "(" + a + operation + b + ")";
+            if (operation == "^" && b.substr(0,1) == "(") {
+                b = "{" + b.substr(1, b.length - 2) + "}";
             }
-            return a + operation + b;
+            var output = a + operation + b;
+
+            if (level > 2) {
+                return "(" + output + ")";
+            }
+            return output;
+        },
+
+        infinity: function(expression, level) {
+            return "\\infty";
         },
 
         number: function(expression, level) {
@@ -70,6 +116,14 @@ define([
             return result;
         },
 
+        string:function(expression, level) {
+            return expression.value;
+        },
+
+        void: function(expression, level) {
+            return "";
+        },
+
         func: function (expression, level) {
             level++;
             var name = expression.name;
@@ -80,13 +134,12 @@ define([
             if (this.argsInDeg.indexOf(name) != -1) {
                 name = name.substr(0, name.length - 1);
                 var args = args.map(function (arg) {
-                    return arg + "^{\circ}";
+                    return arg + "^{\\circ}";
                 }, this);
             }
 
             return name + "(" + args.join(",") + ")";
         }
-
 
     })();
 });

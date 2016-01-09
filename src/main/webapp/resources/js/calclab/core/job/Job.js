@@ -15,8 +15,8 @@ define([
             JobManager.push(this);
         },
 
-        then: function (func) {
-            return this.deferred.then(func);
+        then: function (func, errorHandler) {
+            return this.deferred.then(func, errorHandler);
         }
 
     });

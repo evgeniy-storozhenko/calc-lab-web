@@ -52,6 +52,9 @@ define([
                     value = Alert.createErrorBox("Error", value);
                 }
                 self.setResult(value);
+            }, function() {
+                var value = Alert.createErrorBox("Error", "An error has occurred.");
+                self.setResult(value);
             });
         },
 

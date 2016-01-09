@@ -11,8 +11,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import com.calclab.web.model.CalcResult;
-
 @Service("CalculationService")
 public class CalculationServiceImpl implements CalculationService,
         ResourceLoaderAware {
@@ -40,7 +38,7 @@ public class CalculationServiceImpl implements CalculationService,
         this.resourceLoader = resourceLoader;
     }
 
-    public String execute(String input) {
+    public String execute(String input) throws Exception {
         String result = "";
         if (calcLabPath == null) {
             setCalcLabPath();
@@ -52,6 +50,9 @@ public class CalculationServiceImpl implements CalculationService,
             calcProcessBuilder.directory(new File(calcLabPath));
             Process calcProcess = calcProcessBuilder.start();
             result = readProcessOutput(calcProcess);
+            if (result.startsWith("An error has occurred.")) {
+                throw new Exception();
+            }
         } catch (IOException e) {
             result = e.getMessage();
             e.printStackTrace();
@@ -64,7 +65,7 @@ public class CalculationServiceImpl implements CalculationService,
         BufferedReader br = null;
         try {
             StringBuilder result = new StringBuilder();
-            isr = new InputStreamReader(calcProcess.getInputStream());
+            isr = new InputStreamReader(calcProcess.getInputStream(), "UTF8");
             br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
