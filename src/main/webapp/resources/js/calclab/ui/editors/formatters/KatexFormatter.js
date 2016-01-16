@@ -138,7 +138,11 @@ define([
                 }, this);
             }
 
-            return name + "(" + args.join(",") + ")";
+            if (name == "sqrt") {
+                return "\\" + name + args.join(",");
+            }
+
+            return "\\" + name + "(" + args.join(",") + ")";
         }
 
     })();
