@@ -26,6 +26,10 @@ define([
             lang.mixin(this, args);
         },
 
+        onShow: function() {
+            this.editor.refresh();
+        },
+
         init: function () {
             this.setContent(this.content);
             this.createButtons();
@@ -36,7 +40,7 @@ define([
             var self = this;
             self.setResult("");
             this.showProgressBar();
-            var name = "New calculation 1"; // todo remove hardcode
+            var name = "New calculation " + this.id;
             var input = this.editor.getValue();
             CalcConfiguration.execute(name, input).then(function(responce) {
                 var value;
@@ -141,6 +145,7 @@ define([
         showEditor: function() {
             domClass.add(this.editor.getWrapperElement(), "displayBlock");
             domClass.remove(this.editor.getWrapperElement(), "displayNone");
+            this.editor.refresh();
         },
 
         showResult: function() {

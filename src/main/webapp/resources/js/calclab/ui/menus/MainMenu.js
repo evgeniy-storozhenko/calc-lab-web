@@ -25,7 +25,11 @@ define([
             var items = [
                 new MenuItem({
                     label: "New",
-                    iconClass: "dijitEditorIcon dijitEditorIconNewPage"
+                    iconClass: "dijitEditorIcon dijitEditorIconNewPage",
+                    onClick: function() {
+                        var window = app.workbench.getActiveWindow();
+                        window.openDefaultPage();
+                    }
                 }),
                 new MenuItem({
                     label: "Open",

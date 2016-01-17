@@ -9,6 +9,7 @@ define([
         id: 0,
         title: "New calculation",
         isDirty: false,
+        closable: true,
 
         editor: null,
 

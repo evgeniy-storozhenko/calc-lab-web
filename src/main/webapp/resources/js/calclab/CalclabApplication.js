@@ -5,7 +5,7 @@ define([
     'calclab/ui/common/Workbench'
 ], function (declare, dom, domStyle, Workbench) {
 
-    return declare(null, {
+    return declare('CalclabApplication', [], {
 
         overlayNode: null,
 

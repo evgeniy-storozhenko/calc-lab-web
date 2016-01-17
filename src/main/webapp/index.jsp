@@ -50,10 +50,12 @@
 <script src="resources/js/config/config.js"></script>
 <script src="resources/js/lib/dojo-1.10.4/dojo/dojo.js" data-dojo-config="async: true"></script>
 <script>
+    var app = null;
     require([
         'calclab/CalclabApplication'
     ], function (CalclabApplication) {
-        CalclabApplication.init();
+        app = CalclabApplication;
+        app.init();
     });
 </script>
 </body>
