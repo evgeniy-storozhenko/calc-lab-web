@@ -7,15 +7,17 @@ define([
     "calclab/ui/menus/Toolbar",
     "calclab/ui/common/Window",
     "calclab/ui/views/FileManagerView",
+    "calclab/ui/views/FunctionsView",
     "calclab/ui/user/Auth",
     "dojo/domReady!"
 ], function (declare, BorderContainer, TabContainer, ContentPane, MainMenu, Toolbar, WorkbenchWindow, FileManagerView,
-             Auth) {
+             FunctionsView, Auth) {
 
     return declare(null, {
 
         workbench: null,
         mainMenu: null,
+        views:[],
         windows: [],
 
         constructor: function () {
@@ -26,8 +28,6 @@ define([
             this.initRightContentPane();
             this.initCenterContentPane();
             this.initStatusBar();
-
-            this.workbench.startup();
         },
 
         initWorkbench: function () {
@@ -98,12 +98,13 @@ define([
             var tabContainer1 = new TabContainer({style: "height: 50%; width: 100%;"});
             var tabContainer2 = new TabContainer({style: "height: 50%; width: 100%;"});
 
-            tabContainer1.addChild(
-                new ContentPane({
-                    content: "Center",
-                    title: "Functions"
-                })
-            );
+            var functionsView = new FunctionsView();
+            tabContainer1.addChild(functionsView);
+
+            //var functionsView = new FunctionsView();
+            //functions.addChild(functionsView.grid);
+            //tabContainer1.addChild(functions);
+            //this.views.push(functionsView);
 
             tabContainer2.addChild(
                 new ContentPane({
@@ -114,7 +115,6 @@ define([
 
             pane.addChild(tabContainer1);
             pane.addChild(tabContainer2);
-
             this.workbench.addChild(pane);
         },
 
@@ -137,6 +137,13 @@ define([
 
         getActiveWindow: function () {
             return this.windows[0];
+        },
+
+        startup: function() {
+            this.workbench.startup();
+            this.views.forEach(function(view) {
+                view.startup();
+            });
         }
     });
 

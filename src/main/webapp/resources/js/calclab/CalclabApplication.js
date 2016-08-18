@@ -14,7 +14,7 @@ define([
         init: function() {
             this.overlayNode = dom.byId("gears-preloader");
             this.workbench = new Workbench();
-
+            this.workbench.startup();
             this.endLoading();
         },
 
